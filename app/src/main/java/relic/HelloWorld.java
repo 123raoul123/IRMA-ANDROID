@@ -1,124 +1,61 @@
 package relic;
 
-//import Issue.IssueResponseMessage;
-//import Issue.IssueSignatureMessage;
-//import Issue.IssueRequestMessage;
-//import Issue.IssueCommitmentMessage;
-//import ShowCredential.ShowCredentialRequestMessage;
-//import ShowCredential.ShowCredentialCommitmentMessage;
-//import ShowCredential.ShowCredentialResponseMessage;
-//import irma.*;
+import Issue.IssueResponseMessage;
+import Issue.IssueSignatureMessage;
+import Issue.IssueRequestMessage;
+import Issue.IssueCommitmentMessage;
+import ShowCredential.ShowCredentialRequestMessage;
+import ShowCredential.ShowCredentialCommitmentMessage;
+import ShowCredential.ShowCredentialResponseMessage;
+import irma.*;
 
-import android.util.Log;
-
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Properties;
 
-import android.support.v7.app.AppCompatActivity;
 
 public class HelloWorld {
 	public HelloWorld() {
 		initRelic();
 
-//		Relic.INSTANCE.ep_param_print();
-//		System.out.println(Relic.INSTANCE.ep_param_embed());
+		ep2_t Q = new ep2_t();
+		Relic.INSTANCE.ep2_rand(Q);
+		int n = 5;
 
-//		bn_t n = new bn_t();
-//		Relic.INSTANCE.ep_curve_get_ord(n);
-//
-//		fp12_t e1 = new fp12_t();
-//		fp12_t e2 = new fp12_t();
-//		ep_t p = new ep_t();
-//		ep2_t q = new ep2_t();
-//		Relic.INSTANCE.ep_rand(p);
-//		Relic.INSTANCE.ep2_rand(q);
-//		Relic.INSTANCE.pp_map_oatep_k12(e1,p,q);
-//
-//		System.out.println("optimal ate pairing non-degeneracy is correct");
-//		System.out.print("Next result should NOT equal 0 : ");
-//		System.out.println(Relic.INSTANCE.fp12_cmp_dig(e1, 1));
-//
-//		Relic.INSTANCE.ep_set_infty(p);
-//		Relic.INSTANCE.pp_map_oatep_k12(e1,p,q);
-//		System.out.print("Next result should equal 0 : ");
-//		System.out.println(Relic.INSTANCE.fp12_cmp_dig(e1, 1));
-//
-//		Relic.INSTANCE.ep_rand(p);
-//		Relic.INSTANCE.ep2_set_infty(q);
-//		Relic.INSTANCE.pp_map_oatep_k12(e1,p,q);
-//		System.out.print("Next result should equal 0 : ");
-//		System.out.println(Relic.INSTANCE.fp12_cmp_dig(e1,1));
-//
-//		bn_t k = new bn_t();
-//		ep2_t r = new ep2_t();
-//		System.out.println("optimal ate pairing is bilinear");
-//		Relic.INSTANCE.ep_rand(p);
-//		Relic.INSTANCE.ep2_rand(q);
-//		Relic.INSTANCE.bn_rand_mod(k, n);
-//		Relic.INSTANCE.ep2_mul_monty(r, q, k);
-//		Relic.INSTANCE.pp_map_oatep_k12(e1,p,r);
-//		Relic.INSTANCE.ep_mul_monty(p,p,k);
-//		Relic.INSTANCE.pp_map_oatep_k12(e2,p,q);
-//		System.out.print("Next result should equal 0 : ");
-//		System.out.println(Relic.INSTANCE.fp12_cmp(e1,e2));
-//
-//
-//		// Calculate a^{-1} mod ord
-//		bn_t a = new bn_t(), a_inverse = new bn_t(), ord = new bn_t(), tmp = new bn_t();
-//		Relic.INSTANCE.ep_curve_get_ord(ord); // Get the group order
-//		Relic.INSTANCE.bn_rand_mod(a, ord);   // Generate a random a
-//		Relic.INSTANCE.bn_gcd_ext_basic(tmp, a_inverse, null, a, ord);
-//
-//		// Check that a * a^{-1} = 1 mod ord
-//		bn_t one = new bn_t();
-//		Relic.INSTANCE.bn_mul_karat(one, a, a_inverse); // a * a^{-1}
-//		//Relic.INSTANCE.bn_mod_basic(one, one, ord);     // reduce mod ord
-//		System.out.printf("Modular inverse works: %s\n", Relic.INSTANCE.bn_cmp_dig(one, 1) == 0);
+		IssuerPrivateKey pk = new IssuerPrivateKey(n,Q);
+		Issuer issuer = new Issuer(pk);
+		Attributes at = new Attributes(n-1);
+		UserPrivateKey privk = new UserPrivateKey();
+		User user = new User(privk,at);
 
-//
-//		ep2_t Q = new ep2_t();
-//		Relic.INSTANCE.ep2_rand(Q);
-//		int n = 5;
-//
-//		IssuerPrivateKey pk = new IssuerPrivateKey(n,Q);
-//		Issuer issuer = new Issuer(pk);
-//		Attributes at = new Attributes(n-1);
-//		UserPrivateKey privk = new UserPrivateKey();
-//		User user = new User(privk,at);
-//
-//		// ISSUE PROTOCOL
-//		IssueRequestMessage fum_mes = user.createUserIssueFirstMessage();
-//		IssueResponseMessage fim_mes = issuer.createFirstIssuerMessage();
-//		IssueCommitmentMessage sum_mes = user.createUserIssueSecondMessage(fim_mes);
-//		IssueSignatureMessage sim_mes = issuer.createSecondIssuerMessage(fum_mes,sum_mes);
-//		user.setSignature(sim_mes);
-//
-//		//ShowCredential protocol
-//		Verifier verifier = new Verifier(pk.getPublicKey());
-//
-//		List<Boolean> bools = new ArrayList<>();
-//		bools.add(true);
-//		bools.add(false);
-//		bools.add(false);
-//		bools.add(true);
-//
-//		ShowCredentialRequestMessage fium_mes = user.createShowCredentialRequestMessage(bools);
-//		ShowCredentialResponseMessage fvm_mes = verifier.createVerifierShowCredentialFirstMessage();
-//		ShowCredentialCommitmentMessage seum_mes = user.createShowCredentialCommitmentMessage(fium_mes, fvm_mes,bools);
-//		verifier.verifyCredentials(fium_mes,seum_mes);
-//
-//		System.out.println("Cleaning up Relic");
-//		Relic.INSTANCE.core_clean();
+		// ISSUE PROTOCOL
+		IssueRequestMessage fum_mes = user.createUserIssueFirstMessage();
+		IssueResponseMessage fim_mes = issuer.createFirstIssuerMessage();
+		IssueCommitmentMessage sum_mes = user.createUserIssueSecondMessage(fim_mes);
+		IssueSignatureMessage sim_mes = issuer.createSecondIssuerMessage(fum_mes,sum_mes);
+		user.setSignature(sim_mes);
+
+		//ShowCredential protocol
+		Verifier verifier = new Verifier(pk.getPublicKey());
+
+		List<Boolean> bools = new ArrayList<>();
+		bools.add(true);
+		bools.add(false);
+		bools.add(false);
+		bools.add(true);
+
+		ShowCredentialRequestMessage fium_mes = user.createShowCredentialRequestMessage(bools);
+		ShowCredentialResponseMessage fvm_mes = verifier.createVerifierShowCredentialFirstMessage();
+		ShowCredentialCommitmentMessage seum_mes = user.createShowCredentialCommitmentMessage(fium_mes, fvm_mes,bools);
+		verifier.verifyCredentials(fium_mes,seum_mes);
+
+		System.out.println("Cleaning up Relic");
+		Relic.INSTANCE.core_clean();
 
 	}
 
 	private static void initRelic() {
 
         System.loadLibrary("jnidispatch");
-
 		if(Relic.INSTANCE.core_init() == 1 || Relic.INSTANCE.ep_param_set_any_pairf() == 1) {
 			Relic.INSTANCE.core_clean();
 			System.exit(1);

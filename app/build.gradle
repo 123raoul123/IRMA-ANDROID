@@ -13,7 +13,7 @@ android {
         externalNativeBuild {
             cmake {
                 arguments '-DFP_PRIME=638' , '-DDOCUM=OFF', '-DTESTS=0', '-DBENCH=0',
-                        '-DOPSYS=RELIC_NONE', '-DWORD=32', '-DALIGN=1',// '-DWITH="DV;BN;FP;FPX;EP;EPX;PP;PC;MD"',
+                        '-DOPSYS=RELIC_NONE', '-DWORD=32', '-DALIGN=1', '-DWITH="DV;BN;FP;FPX;EP;EPX;PP;PC;MD"',
                         '-DSTLIB=OFF', '-DSTBIN=OFF'
                 cppFlags ""
             }
