@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "26.0.0"
+    defaultConfig {
+        applicationId "com.example.restourgie.irma"
+        minSdkVersion 21
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            cmake {
+                arguments '-DFP_PRIME=638' , '-DDOCUM=OFF', '-DTESTS=0', '-DBENCH=0',
+                        '-DOPSYS=RELIC_NONE', '-DWORD=32', '-DALIGN=1',// '-DWITH="DV;BN;FP;FPX;EP;EPX;PP;PC;MD"',
+                        '-DSTLIB=OFF', '-DSTBIN=OFF'
+                cppFlags ""
+            }
+            ndk{
+                abiFilters "x86"
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path "C:\\Users\\restourgie\\Documents\\GitHub\\relic\\CMakeLists.txt"
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile files('libs/jna-min.jar')
+//    compile 'net.java.dev.jna:jna:4.4.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
+}
