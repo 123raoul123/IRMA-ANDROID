@@ -119,9 +119,9 @@ public class Issuer {
         List<ep_t> basePoints = new ArrayList<>();
         for(int i = 1; i<privkey.getaList().size(); ++i)
         {
-            ep_t bla = new ep_t();
-            Relic.INSTANCE.ep_mul_monty(bla,K,privkey.getaList().get(i));
-            basePoints.add(bla);
+            ep_t Si = new ep_t();
+            Relic.INSTANCE.ep_mul_monty(Si,K,privkey.getaList().get(i));
+            basePoints.add(Si);
         }
 
         /*******************************************

@@ -3,8 +3,6 @@ package relic;
 
 import com.sun.jna.Library;
 import com.sun.jna.Native;
-import com.sun.jna.Pointer;
-import com.sun.jna.Structure;
 
 public interface Relic extends Library {
 	public static final Relic INSTANCE = (Relic) Native.loadLibrary("relic", Relic.class);
