@@ -12,7 +12,8 @@ This application has the following dependencies. All these dependencies are incl
   * JNA-min.jar is used. JNA-min.jar does not contain the precompiled libjnidispatch.so file. The precompiled versions are stored in /app/src/main/jniLibs/.
   
 ## Building
-
+By using Android studio and an emulator provided by Android studio
 
 ## Testing
 
+The test class is located at /app/src/main/java/relic/HelloWorld.java. This class tests a single run of both protocols with n attributes.
